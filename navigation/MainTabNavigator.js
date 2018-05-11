@@ -5,11 +5,11 @@ import { TabNavigator, TabBarBottom } from 'react-navigation';
 
 import Colors from '../constants/Colors';
 
-import HomeScreen from '../screens/HomeScreen';
+//import HomeScreen from '../screens/HomeScreen';
 import LinksScreen from '../screens/LinksScreen';
-import SettingsScreen from '../screens/SettingsScreen';
+//import SettingsScreen from '../screens/SettingsScreen';
 import MarketScreen from '../screens/MarketScreen';
-import OfficeScreen from '../screens/OfficeScreen';
+//import OfficeScreen from '../screens/OfficeScreen';
 
 
 
@@ -21,14 +21,7 @@ export default TabNavigator(
     },
     Links: {
       screen: LinksScreen,
-    },
-    Settings: {
-      screen: SettingsScreen,
-    },
-    Office: {
-      screen: OfficeScreen,
-    },
-   
+    }
   },
   {
     navigationOptions: ({ navigation }) => ({

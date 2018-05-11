@@ -20,7 +20,7 @@ export default class MarketScreen extends Component {
         super(props);
         this.state = {
             data: [],
-            isLoading: true,
+            isLoading: false,
             
         }
     }
@@ -56,15 +56,19 @@ export default class MarketScreen extends Component {
 
     console.log(arr[0])
       return (
-        <View style={{ flex: 1, backgroundColor:'blue' }}>
+        <View style={{flex:1, backgroundColor:'#061a3a'}}>
            <Header
               placement="left"
-              leftComponent={{ icon: 'menu', color: '#fff' }}
-              centerComponent={{ text: 'Martket', style: { color: '#fff' } }}
-              rightComponent={{ icon: 'home', color: '#fff' }}
+             // leftComponent={{text: 'Martket', icon: 'menu', color: '#fff' }}
+             centerComponent={{ text: 'Martket', style: { color: '#fff' } }}
+              rightComponent={{ icon: 'search', color: '#fff' }}
             />
-            <View style={{flex:1}}><Text>TOP 10</Text></View>
-            <List containerStyle={{ borderTopWidth: 1, borderBottomWidth: 1 }}>
+            <View style={{flexDirection: 'row'}}>
+              <Text style={{marginLeft:20,color:'white'}}>Name / Market Cap</Text>
+              <Text style={{marginLeft:160,color:'white'}}>Price</Text> 
+            </View>
+
+            <List containerStyle={{ borderTopWidth: 0, borderBottomWidth: 0 }}>
 
                 <FlatList
                     data={arr}
@@ -87,6 +91,7 @@ export default class MarketScreen extends Component {
                      
 
                     }
+                    refreshing={this.state.refreshing}
                     keyExtractor={(item) => {return item.name.toString()}}
                 />
            </List>
