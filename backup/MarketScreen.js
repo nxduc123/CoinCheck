@@ -1,20 +1,20 @@
 import React, { Component } from 'react';
 import {
-  Text, View, Dimensions,StyleSheet,ImageBackground,StatusBar
+  StyleSheet,
+  View,
+  FlatList,
+  RefreshControl,
+  ActivityIndicator
 } from 'react-native';
 import { Font, AppLoading } from "expo";
-import {Card, Header, CardItem, Container, Content, Form, Item, Icon,
-        InputGroup, Left, Right, Body, Title, List,ListItem, Input, Button
-      } from 'native-base';
-//import {Header, List, ListItem, SearchBar } from "react-native-elements";
+import {Card, CardItem, Container, Content, Form, Item, Input, Icon, Button, Text, InputGroup, Left, Right, Body, Title } from 'native-base';
+import {Header, List, ListItem, SearchBar } from "react-native-elements";
 import api from '../api/api';
 
 export default class MarketScreen extends Component {
-  
     static navigationOptions = {
         header: null,
         title: 'MarketScreen',
-        
         };
     constructor(props){
         super(props);
@@ -41,7 +41,6 @@ export default class MarketScreen extends Component {
     }
   
   render() {
-   // let {height, width} = Dimensions.get('window');
    // console.log("data coin :",this.state.data);
     //  console.log("data coin :",this.state.bitcoin);
 
@@ -56,65 +55,8 @@ export default class MarketScreen extends Component {
 
 
     console.log(arr[0])
-    
-
       return (
-    
-
-        <ImageBackground style={ styles.imgBackground } 
-                 resizeMode='cover' 
-                 source={require('../img/coinblue.png')}>
-                 <StatusBar
-                 backgroundColor="red"
-                 barStyle="light-content"
-               />
-        <Container>
-        <Header style={{ marginTop:24}} searchBar rounded>
-          <Item>
-            <Icon name="md-search" />
-            <Input placeholder="Search" />
-            <Icon name="logo-usd" />
-          </Item>
-          <Button transparent>
-            <Text>Search</Text>
-          </Button>
-        </Header>
-        <Content>
-          <View style={{flexDirection: 'row',borderBottomWidth: 2,borderBottomColor: 'white',}}>
-            <Text style={{marginLeft:10,color:'white',fontSize:20}}>Name / Market Cap</Text>
-            <Text style={{marginLeft:150,color:'white',fontSize:20}}>Price</Text> 
-          </View>
-          <List dataArray={arr}
-            renderRow={(item) =>
-              <ListItem>
-                <Body>
-                  <View>
-                    <Text style={{color: (item.quotes.USD.percent_change_24h >= 0) ?  'green' : 'white',fontSize:18}}>
-                      {item.name} ({item.symbol})
-                    </Text>
-                    <Text style={{color: (item.quotes.USD.percent_change_24h >= 0) ?  'green' : 'white'}}>
-                    {item.quotes.USD.market_cap}
-                    </Text>
-                  </View>
-                </Body>
-
-                <Right style={{flexDirection:'row'}}>
-                  <Icon name= {(item.quotes.USD.percent_change_24h >= 0) ? 'arrow-up' : 'arrow-down' }
-                    style={{color: (item.quotes.USD.percent_change_24h >= 0) ?  'green' : 'red'}} />
-                  <Text style={{color: (item.quotes.USD.percent_change_24h >= 0) ?  'green' : 'red'}}>
-                    {item.quotes.USD.price}</Text>
-                   
-                </Right>
-              </ListItem>
-            }>
-          </List>
-         
-        </Content>
-      </Container>
-      </ImageBackground>
-
-
-      /*   <View style={{flex:1, backgroundColor:'#061a3a'}}>
+        <View style={{flex:1, backgroundColor:'#061a3a'}}>
            <Header
               placement="left"
              // leftComponent={{text: 'Martket', icon: 'menu', color: '#fff' }}
@@ -153,7 +95,7 @@ export default class MarketScreen extends Component {
                     keyExtractor={(item) => {return item.name.toString()}}
                 />
            </List>
-           </View> */
+           </View>
       );
     }
   }
@@ -180,11 +122,6 @@ export default class MarketScreen extends Component {
     },
     email: {
       color: 'red'
-    },
-    imgBackground: {
-      width: '100%',
-      height: '100%',
-      flex: 1 
-},
+    }
     
   });
