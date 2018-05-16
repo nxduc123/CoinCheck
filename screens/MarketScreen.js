@@ -4,12 +4,12 @@ import {
 } from 'react-native';
 import { Font, AppLoading } from "expo";
 import {Card, Header, CardItem, Container, Content, Form, Item, Icon,
-        InputGroup, Left, Right, Body, Title, List,ListItem, Input, Button
+        InputGroup, Left, Right, Body, Title, List,ListItem, Input, Button, Picker
       } from 'native-base';
 //import {Header, List, ListItem, SearchBar } from "react-native-elements";
 import api from '../api/api';
 
-export default class MarketScreen extends Component {
+class MarketScreen extends Component {
   
     static navigationOptions = {
         header: null,
@@ -21,7 +21,7 @@ export default class MarketScreen extends Component {
         this.state = {
             data: [],
             isLoading: false,
-            
+            selected1: ""
         }
     }
     componentWillMount(){
@@ -39,6 +39,11 @@ export default class MarketScreen extends Component {
             console.error(error);
         })
     }
+    onValueChange(value: string) {
+      this.setState({
+        selected1: value
+      });
+    }
   
   render() {
    // let {height, width} = Dimensions.get('window');
@@ -55,12 +60,11 @@ export default class MarketScreen extends Component {
     let arr = Array.from(values(info));
 
 
-    console.log(arr[0])
+  //  console.log(arr[0])
     
 
       return (
     
-
         <ImageBackground style={ styles.imgBackground } 
                  resizeMode='cover' 
                  source={require('../img/coinblue.png')}>
@@ -69,41 +73,60 @@ export default class MarketScreen extends Component {
                  barStyle="light-content"
                />
         <Container>
-        <Header style={{ marginTop:24}} searchBar rounded>
-          <Item>
-            <Icon name="md-search" />
-            <Input placeholder="Search" />
-            <Icon name="logo-usd" />
-          </Item>
-          <Button transparent>
-            <Text>Search</Text>
-          </Button>
+        <Header style={{ marginTop:24}} searchBar>
+            <Item>
+                <Icon onPress={() => alert('This is a button Seach')} name="md-search" />
+                <Input placeholder="Search" />
+                <Icon name="logo-usd" />
+            </Item>
+            <Button transparent>
+              <Text>Search</Text>
+            </Button>
         </Header>
         <Content>
-          <View style={{flexDirection: 'row',borderBottomWidth: 2,borderBottomColor: 'white',}}>
-            <Text style={{marginLeft:10,color:'white',fontSize:20}}>Name / Market Cap</Text>
-            <Text style={{marginLeft:150,color:'white',fontSize:20}}>Price</Text> 
+          
+          <View style={{flexDirection: 'row',borderBottomWidth: 2,borderBottomColor: 'white',height:40}}>
+            <Text style={{marginLeft:10, color:'white',fontSize:20}}>Name / Market Cap</Text>
+          
+            <Text style={{marginLeft:100,color:'white',fontSize:20}}>Price</Text> 
+           
+
           </View>
+          <Picker
+              mode="dropdown"
+              iosIcon={<Icon name="arrow-down" />}
+              style={{color:'white'}}
+              selectedValue={this.state.selected1}
+              onValueChange={this.onValueChange.bind(this)} >
+              <Picker.Item label="Price ⬆️" value="key0" />
+              <Picker.Item label="Price ⬇️" value="key1" />
+            </Picker>
+            
           <List dataArray={arr}
             renderRow={(item) =>
               <ListItem>
                 <Body>
                   <View>
-                    <Text style={{color: (item.quotes.USD.percent_change_24h >= 0) ?  'green' : 'white',fontSize:18}}>
+                    <Text style={{color: (item.quotes.USD.percent_change_24h >= 0) ?  'green' : 'white',fontSize:15}}>
                       {item.name} ({item.symbol})
                     </Text>
                     <Text style={{color: (item.quotes.USD.percent_change_24h >= 0) ?  'green' : 'white'}}>
-                    {item.quotes.USD.market_cap}
+                      {item.quotes.USD.market_cap}$
                     </Text>
+                   
                   </View>
                 </Body>
 
-                <Right style={{flexDirection:'row'}}>
+                <Right style={{flexDirection:'row',justifyContent:'flex-end'}}>
+
                   <Icon name= {(item.quotes.USD.percent_change_24h >= 0) ? 'arrow-up' : 'arrow-down' }
                     style={{color: (item.quotes.USD.percent_change_24h >= 0) ?  'green' : 'red'}} />
+
                   <Text style={{color: (item.quotes.USD.percent_change_24h >= 0) ?  'green' : 'red'}}>
-                    {item.quotes.USD.price}</Text>
-                   
+                    {item.quotes.USD.price} $
+                  </Text>
+
+                  
                 </Right>
               </ListItem>
             }>
@@ -112,48 +135,6 @@ export default class MarketScreen extends Component {
         </Content>
       </Container>
       </ImageBackground>
-
-
-      /*   <View style={{flex:1, backgroundColor:'#061a3a'}}>
-           <Header
-              placement="left"
-             // leftComponent={{text: 'Martket', icon: 'menu', color: '#fff' }}
-             centerComponent={{ text: 'Martket', style: { color: '#fff' } }}
-              rightComponent={{ icon: 'search', color: '#fff' }}
-            />
-            <View style={{flexDirection: 'row'}}>
-              <Text style={{marginLeft:20,color:'white'}}>Name / Market Cap</Text>
-              <Text style={{marginLeft:160,color:'white'}}>Price</Text> 
-            </View>
-
-            <List containerStyle={{ borderTopWidth: 0, borderBottomWidth: 0 }}>
-
-                <FlatList
-                    data={arr}
-                    showsVerticalScrollIndicator={false}
-                    renderItem={({item}) =>
-
-                      <ListItem
-                      title={`${item.name} (${item.symbol})`}
-                      subtitle={item.quotes.USD.market_cap}
-                      rightTitle= {`US$ ${item.quotes.USD.price}`}
-                      //neu changer 24 h < 0 = red , con lai green.
-                     
-                      rightTitleStyle={{
-                      color: (item.quotes.USD.percent_change_24h >= 0) ?  'green' : 'red'
-                      }}
-                      
-                      rightSubtitle ={`${item.quotes.USD.percent_change_24h}`}
-                  
-                      />
-                     
-
-                    }
-                    refreshing={this.state.refreshing}
-                    keyExtractor={(item) => {return item.name.toString()}}
-                />
-           </List>
-           </View> */
       );
     }
   }
@@ -188,3 +169,5 @@ export default class MarketScreen extends Component {
 },
     
   });
+
+  export default MarketScreen; 
